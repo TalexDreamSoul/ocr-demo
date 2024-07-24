@@ -8,6 +8,7 @@ defineOptions({
 })
 
 const input = ref()
+const progress = ref(0)
 const options = reactive<any>([])
 function handleChoose() {
   options.length = 0
@@ -51,10 +52,9 @@ function analyzeImage() {
       logger: (m) => {
         // console.log(m)
         if (m.status === 'recognizing text') {
-          const progress = Math.floor(m.progress * 100)
+          const _progress = Math.floor(m.progress * 100)
 
-          if (progress % 10 === 0)
-            console.log('progress', progress)
+          progress.value = _progress
         }
       },
     },
@@ -75,16 +75,18 @@ function analyzeImage() {
       <canvas id="canvas" absolute op-0 />
       <input ref="input" absolute op-0 accept="image/*" type="file" @change="handleChange">
 
-      <button @touchend="handleChoose" @click="handleChoose">
+      <div class="progress-bar" :style="`--p: ${progress}%`" v-text="`${progress}%`" />
+
+      <button @click="handleChoose">
         进账单
       </button>
-      <button @touchend="handleChoose" @click="handleChoose">
+      <button @click="handleChoose">
         结算业务单
       </button>
-      <button @touchend="handleChoose" @click="handleChoose">
+      <button @click="handleChoose">
         通用文字
       </button>
-      <button @touchend="handleChoose" @click="handleChoose">
+      <button @click="handleChoose">
         支票
       </button>
     </div>
@@ -105,6 +107,38 @@ function analyzeImage() {
 </template>
 
 <style>
+.progress-bar {
+  position: absolute;
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  top: 120px;
+
+  height: 20px;
+  width: 100%;
+
+  color: red;
+  font-weight: 600;
+  font-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  border-radius: 8px;
+  background-color: #1c262850;
+}
+
+.progress-bar::before {
+  z-index: -1;
+  content: '';
+  position: absolute;
+  display: block;
+
+  height: 100%;
+  width: var(--p, 0);
+
+  border-radius: 8px;
+  background-color: #1c2628;
+}
+
 table td.name {
   width: 100px;
 }
