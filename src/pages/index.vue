@@ -7,6 +7,7 @@ defineOptions({
   name: 'IndexPage',
 })
 
+const src = ref()
 const input = ref()
 const progress = ref(0)
 const options = reactive<any>([])
@@ -34,6 +35,8 @@ function handleChange(e: any) {
       setTimeout(() => {
         analyzeImage()
       }, 200)
+
+      src.value = img.src
     }
 
     img.src = e.target!.result!
@@ -66,7 +69,17 @@ function analyzeImage() {
   })
 }
 
-// 计算两端文本的相似度
+function copyResult() {
+  const text = options.map((item: any) => `${item.name}: ${item.value}`).join('\n')
+
+  navigator.clipboard.writeText(text)
+    .then(() => {
+      alert('复制成功')
+    })
+    .catch((err) => {
+      alert('复制失败')
+    })
+}
 </script>
 
 <template>
@@ -92,6 +105,7 @@ function analyzeImage() {
     </div>
 
     <div class="Display">
+      <img :src="src">
       <!-- 渲染 options 为 2xn的表格 (竖着的 k:v) -->
 
       <table v-if="options.length">
@@ -102,6 +116,10 @@ function analyzeImage() {
           <td>{{ option.value }}</td>
         </tr>
       </table>
+
+      <button v-if="src && options.length" @click="copyResult">
+        复制结果
+      </button>
     </div>
   </div>
 </template>
@@ -121,7 +139,7 @@ function analyzeImage() {
 
   color: red;
   font-weight: 600;
-  font-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+  text-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
   border-radius: 8px;
   background-color: #1c262850;
 }
@@ -132,9 +150,12 @@ function analyzeImage() {
   position: absolute;
   display: block;
 
+  left: 0;
+
   height: 100%;
   width: var(--p, 0);
 
+  transition: 0.25s;
   border-radius: 8px;
   background-color: #1c2628;
 }
@@ -145,11 +166,19 @@ table td.name {
 
 .Display {
   position: relative;
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  margin-bottom: 50px;
 
   top: 50px;
 
   width: 100%;
-  height: 50%;
+  /* height: 50%; */
 }
 
 .Menu {

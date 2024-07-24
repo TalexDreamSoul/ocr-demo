@@ -16,7 +16,7 @@
 .Main {
   padding-top: 0.5rem;
 
-  height: calc(100% - 50px - 1rem);
+  /* height: calc(100% - 50px - 1rem); */
 
   border-top: 2px solid #c798a0;
 }
@@ -54,17 +54,17 @@ button {
   position: absolute;
   padding: 1.5rem 0.5rem;
 
-  top: 50%;
+  top: 0;
   left: 50%;
 
   width: 375px;
-  height: 667px;
+  min-height: 100vh;
 
   border-radius: 4px;
   background-color: #dbe9fc;
 
   overflow: hidden;
   box-sizing: border-box;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
 }
 </style>
