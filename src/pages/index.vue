@@ -12,10 +12,17 @@ const input = ref()
 const progress = ref(0)
 const options = reactive<any>([])
 function handleChoose() {
+  src.value = ''
   options.length = 0
   input.value.value = ''
+  progress.value = 0
+  input.value.files = null
 
-  input.value.click()
+  setTimeout(() => {
+    console.log('e', input.value)
+
+    input.value.click()
+  }, 20)
 }
 
 function handleChange(e: any) {
@@ -85,10 +92,13 @@ function copyResult() {
 <template>
   <div class="Menu">
     <div class="MenuInner">
-      <canvas id="canvas" absolute op-0 />
-      <input ref="input" absolute op-0 accept="image/*" type="file" @change="handleChange">
+      <canvas id="canvas" style="pointer-events: none;" absolute op-0 />
+      <input
+        ref="input" accept="image/*" type="file" absolute op-0 style="pointer-events: none;"
+        @change="handleChange"
+      >
 
-      <div class="progress-bar" :style="`--p: ${progress}%`" v-text="`${progress}%`" />
+      <div v-if="progress" class="progress-bar" :style="`--p: ${progress}%`" v-text="`${progress}%`" />
 
       <button @click="handleChoose">
         进账单
