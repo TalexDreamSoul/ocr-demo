@@ -75,16 +75,16 @@ function analyzeImage() {
       <canvas id="canvas" absolute op-0 />
       <input ref="input" absolute op-0 accept="image/*" type="file" @change="handleChange">
 
-      <button @click="handleChoose">
+      <button @touchend="handleChoose" @click="handleChoose">
         进账单
       </button>
-      <button @click="handleChoose">
+      <button @touchend="handleChoose" @click="handleChoose">
         结算业务单
       </button>
-      <button @click="handleChoose">
+      <button @touchend="handleChoose" @click="handleChoose">
         通用文字
       </button>
-      <button @click="handleChoose">
+      <button @touchend="handleChoose" @click="handleChoose">
         支票
       </button>
     </div>
